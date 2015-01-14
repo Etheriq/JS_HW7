@@ -2,9 +2,34 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>Home work 6</title>
+    <link rel="stylesheet" href="css/main.css"/>
 </head>
 <body>
 
+<div class="container">
+
+    <div class="wrapper">
+        <H1 class="text-center"> Todo Homework </H1>
+
+        <div class="text-center">
+            <input type="text" id="todo_text_field" name="todo-wish" placeholder="Todo wish" class="input-f">
+            <input type="checkbox" id="tod_filter">
+            <label for="tod_filter">Filter</label>
+        </div>
+        <H2 class="text-center">Todo list:</H2>
+
+        <ul id="todo_ul_list">
+        </ul>
+
+        <hr class="hr">
+        <input type="checkbox" id="select_all_chk" style="margin-bottom: 15px;">
+        <label for="select_all_chk">Select all</label><p id="summary_chk" class="summary-info"> <b>Selected:</b> 0 <b>Filtered:</b> 0 <b>Total:</b> 0 </p>
+        <input type="button" value="Remove selected items" id="delete_selected_li" class="summary-info btn">
+    </div>
+
+</div>
+
+<script src="js/todo.js"></script>
 </body>
 </html>
