@@ -107,8 +107,8 @@ function saveTodoList(e) {
     var xhr = new XMLHttpRequest();
     xhr.open('POST', url, true);
     xhr.send(JSON.stringify(data));
-    xhr.onload = function (d) {
-        if (xhr.status === 200) {
+    xhr.onload = function (request) {
+        if (request.target.status === 200) {
             console.log('send. POST');
         } else {
             console.log('bad request POST');
