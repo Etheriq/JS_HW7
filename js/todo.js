@@ -4,6 +4,7 @@ var summaryResult = document.getElementById('summary_chk');
 var filter = document.getElementById('tod_filter');
 var input = document.getElementById('todo_text_field');
 var url = 'http://localhost:1337/todoList';
+var error_message = document.getElementById('error_messages');
 
 function handleSpan(e) {
     var inputText = document.createElement('input');
@@ -70,6 +71,14 @@ function handleInput(e) {
     }
 }
 
+function handleErrorMessages(e) {
+    setTimeout(function(){
+        e.target.textContent = '';
+        e.target.classList.remove('error-message');
+        e.target.classList.remove('success-message');
+    }, 5000);
+}
+
 function removeList(e) {
     var selectedLi = ulList.querySelectorAll('li.selected-li');
 
@@ -108,16 +117,27 @@ function saveTodoList(e) {
     xhr.open('POST', url, true);
     xhr.send(JSON.stringify(data));
     xhr.onload = function (request) {
+        var event_message = new Event('error_modify');
         if (request.target.status === 200) {
             console.log('send. POST');
+
+            li.forEach(function(el){
+                el.parentNode.removeChild(el);
+            });
+
+            error_message.textContent = 'list was saved to remote server successfully.';
+            error_message.classList.add('success-message');
+            error_message.dispatchEvent(event_message);
         } else {
             console.log('bad request POST');
         }
     };
-    li.forEach(function(el){
-        el.parentNode.removeChild(el);
-    });
-
+    xhr.onerror = function(){
+        var event_message = new Event('error_modify');
+        error_message.textContent = 'Server not found.';
+        error_message.classList.add('error-message');
+        error_message.dispatchEvent(event_message);
+    };
     showSelectedUnselected(ulList);
 }
 
@@ -128,8 +148,16 @@ function loadTodoList(e) {
     xhr.send();
 
     xhr.addEventListener('load', handleResp);
+    xhr.addEventListener('error', handleRespError);
 
+    function handleRespError() {
+        var event_message = new Event('error_modify');
+        error_message.textContent = 'Unable to load the list. server is unavailable';
+        error_message.classList.add('error-message');
+        error_message.dispatchEvent(event_message);
+    }
     function handleResp(xhrE) {
+        var event_message = new Event('error_modify');
         if (xhrE.target.status === 200) {
             loadedData = JSON.parse(xhrE.target.response);
 
@@ -150,8 +178,10 @@ function loadTodoList(e) {
                 ulList.appendChild(li);
 
             });
+            error_message.textContent = 'list was load from remote server successfully.';
+            error_message.classList.add('success-message');
+            error_message.dispatchEvent(event_message);
             showSelectedUnselected(ulList);
-
         } else {
             console.log('bad request GET');
         }
@@ -188,6 +218,7 @@ selectAll.addEventListener('change', function(e){
 document.getElementById('delete_selected_li').addEventListener('click', removeList);
 document.getElementById('todo_load').addEventListener('click', loadTodoList);
 document.getElementById('todo_save').addEventListener('click', saveTodoList);
+error_message.addEventListener('error_modify', handleErrorMessages);
 
 NodeList.prototype.forEach = function (f) {
     Array.prototype.forEach.call(this, f);
