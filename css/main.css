@@ -142,3 +142,11 @@ li.filtered {
 .over {
     border: 1px dashed dodgerblue;
 }
+.error-message {
+    font-weight: bolder;
+    color: #ED5E5E;
+}
+.success-message {
+    font-weight: bolder;
+    color: #437bb6;
+}
