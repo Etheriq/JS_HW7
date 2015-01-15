@@ -3,6 +3,7 @@ var selectAll = document.getElementById('select_all_chk');
 var summaryResult = document.getElementById('summary_chk');
 var filter = document.getElementById('tod_filter');
 var input = document.getElementById('todo_text_field');
+var url = 'http://localhost:1337/todoList';
 
 function handleSpan(e) {
     var inputText = document.createElement('input');
@@ -94,7 +95,6 @@ function showSelectedUnselected(ul)
 }
 
 function saveTodoList(e) {
-    var url = 'http://localhost:1337/todoList';
     var spans = document.querySelectorAll('#todo_ul_list span');
     var data = [];
     var li = [];
@@ -122,7 +122,6 @@ function saveTodoList(e) {
 }
 
 function loadTodoList(e) {
-    var url = 'http://localhost:1337/todoList';
     var loadedData;
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
